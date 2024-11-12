@@ -1,0 +1,24 @@
+---
+title: Analisis inteligente de datos
+subtitle: Analisis descriptivo de discografia de Soda Stereo
+author: Agustin Gonzalez Lamenza
+date: last-modified
+date-format: iso
+toc: true
+number-sections: true
+format: html
+code-line-numbers: true
+code-copy: true
+execute:
+  warning: false
+  output: false
+---
+
+::: {.callout-note}
+Para ver info de instalación ver [README.md]()
+:::
+
+# Summary e variables
+```{python}
+print("Hola como va?")
+```
