@@ -12,7 +12,7 @@ execute:
   output: false
 format:
   html:
-    # embed-resources: true
+    embed-resources: true
     theme: "flatly"
     toc: true
 ---
