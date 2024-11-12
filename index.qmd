@@ -4,14 +4,17 @@ subtitle: Analisis descriptivo de discografia de Soda Stereo
 author: Agustin Gonzalez Lamenza
 date: last-modified
 date-format: iso
-toc: true
 number-sections: true
-format: html
 code-line-numbers: true
 code-copy: true
 execute:
   warning: false
   output: false
+format:
+  html:
+    # embed-resources: true
+    theme: "flatly"
+    toc: true
 ---
 
 ::: {.callout-note}
