@@ -1,5 +1,13 @@
 ---
 title: "Scraping datos de canciones y letras + EDA"
+author: "Agustin Gonzalez Lamenza"
+date: last-modified
+date-format: long
+toc: true
+format:
+    html:
+        embed-resources: true
+        output-file: index.html
 ---
 
 # Scraping
