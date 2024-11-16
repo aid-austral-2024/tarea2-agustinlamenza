@@ -38,6 +38,8 @@ result = load_dotenv()
 
 ## Funciones usadas para scraping a Spotify
 
+El scraping consiste en crear un archivo .tsv con el listado de cansiones con sus features. Uso un .tsv para unificar formato con el archivo de letras a generar a posterior y evitar problemas con las ",". Ademas el resultante es mas simple de leer a simple vista.
+
 ```{python}
 # Función para inicializar el cliente de Spotify
 def initialize_spotify_client(client_id: str, client_secret: str) -> spotipy.Spotify:
@@ -133,7 +135,7 @@ def fetch_artist_data(
         # Pausar para evitar el límite de la API
         time.sleep(pause_time)
 
-    # Guardar los datos en un archivo CSV
+    # Guardar los datos en un archivo TSV
     df = pd.DataFrame(song_data)
     df.to_csv(output_file, sep="\t", index=False)
 ```
@@ -168,14 +170,14 @@ def get_lyrics_from_lyricsondemand(
     return None
 
 
-# Función para procesar un archivo CSV y obtener letras de canciones
+# Función para procesar un archivo TSV y obtener letras de canciones
 def process_lyrics(
     input_file: str,
     output_file: str,
     artist_name: str,
     base_url: str = "https://lyricsondemand.com",
 ) -> None:
-    # Leer el archivo CSV
+    # Leer el archivo TSV
     spotify_df = pd.read_csv(input_file, sep="\t")
 
     # Lista para almacenar las letras
@@ -197,7 +199,7 @@ def process_lyrics(
     # Convertir la lista de resultados a un DataFrame
     lyrics_df = pd.DataFrame(lyrics_data)
 
-    # Guardar los resultados en un archivo CSV
+    # Guardar los resultados en un archivo TSV
     lyrics_df.to_csv(output_file, sep="\t", index=False)
 ```
 
