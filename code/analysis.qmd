@@ -7,6 +7,7 @@ toc: true
 format:
     html:
         embed-resources: true
+        output-file: index.html
 ---
 
 # Scraping
