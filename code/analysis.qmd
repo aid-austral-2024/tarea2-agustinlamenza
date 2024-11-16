@@ -21,7 +21,6 @@ TODO
 ```{python}
 import os
 from dotenv import load_dotenv
-import subprocess
 import pandas as pd
 import time
 import spotipy
