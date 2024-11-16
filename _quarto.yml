@@ -1,0 +1,19 @@
+project:
+  type: website
+
+website:
+  title: "EDA de Soda Stereo"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: code/analysis.qmd
+        text: TPF
+      - href: about.qmd
+        text: About
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

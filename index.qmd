@@ -1,27 +1,11 @@
 ---
-title: Analisis inteligente de datos
-subtitle: Analisis descriptivo de discografia de Soda Stereo
-author: Agustin Gonzalez Lamenza
-date: last-modified
-date-format: iso
-number-sections: true
-code-line-numbers: true
-code-copy: true
-execute:
-  warning: false
-  output: false
-format:
-  html:
-    embed-resources: true
-    theme: "flatly"
-    toc: true
+title: "EDA de Soda Stereo"
 ---
+
+This is a Quarto website.
+
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ::: {.callout-note}
 Para ver info de instalación ver [README.md]()
 :::
-
-# Summary e variables
-```{python}
-print("Hola como va?")
-```
