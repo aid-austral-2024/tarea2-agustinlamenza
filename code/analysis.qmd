@@ -10,6 +10,10 @@ format:
         output-file: index.html
 ---
 
+# Consideraciones generales
+
+TODO
+
 # Scraping
 
 ## Importar librerias
