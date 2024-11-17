@@ -1,24 +1,3 @@
----
-title: "Scraping datos de canciones y letras + EDA"
-author: "Agustin Gonzalez Lamenza"
-date: last-modified
-date-format: long
-toc: true
-format:
-    html:
-        embed-resources: true
-        output-file: index.html
----
-
-# Consideraciones generales
-
-TODO
-
-# Scraping
-
-## Importar librerias
-
-```{python}
 import os
 from dotenv import load_dotenv
 import pandas as pd
@@ -29,21 +8,8 @@ import requests
 from bs4 import BeautifulSoup
 import unidecode
 import re
-from typing import Optional
-```
 
-## Cargo variales de archivo `.env`
 
-```{python}
-# Cargar las variables de entorno desde el archivo .env
-result = load_dotenv()
-```
-
-## Funciones usadas para scraping a Spotify
-
-El scraping consiste en crear un archivo .tsv con el listado de cansiones con sus features. Uso un .tsv para unificar formato con el archivo de letras a generar a posterior y evitar problemas con las ",". Ademas el resultante es mas simple de leer a simple vista.
-
-```{python}
 # Función para inicializar el cliente de Spotify
 def initialize_spotify_client(client_id: str, client_secret: str) -> spotipy.Spotify:
     auth_manager = SpotifyClientCredentials(
@@ -90,8 +56,8 @@ def get_audio_features(
 
 # Función principal para extraer información de un artista
 def fetch_artist_data(
-    sp: spotipy.Spotify, artist_name: str, output_file: str, pause_time: float = 1.0
-) -> list:
+    sp: spotipy.Spotify, artist_name: str, pause_time: float = 1.0
+) -> pd.DataFrame:
     albums = get_albums(sp, artist_name)
 
     song_data = []
@@ -138,18 +104,14 @@ def fetch_artist_data(
         # Pausar para evitar el límite de la API
         time.sleep(pause_time)
 
-    # Guardar los datos en un archivo TSV
     df = pd.DataFrame(song_data)
-    df.to_csv(output_file, sep="\t", index=False)
-```
+    return df
 
-## Funciones usadas para scraping a Lyricsondemand
 
-```{python}
 # Función para obtener la letra de la canción de Lyrics On Demand
 def get_lyrics_from_lyricsondemand(
     artist: str, song_title: str, base_url: str = "https://lyricsondemand.com"
-) -> Optional[str]:
+) -> str | None:
     # Normalizar nombres eliminando acentos y espacios
     artist = unidecode.unidecode(artist.lower()).replace(" ", "") + "lyrics"
     song_title = unidecode.unidecode(song_title.lower()).replace(" ", "") + "lyrics"
@@ -176,15 +138,13 @@ def get_lyrics_from_lyricsondemand(
 # Función para procesar un archivo TSV y obtener letras de canciones
 def process_lyrics(
     input_file: str,
-    output_file: str,
     artist_name: str,
-    base_url: str = "https://lyricsondemand.com",
-) -> None:
+) -> pd.DataFrame:
     # Leer el archivo TSV
     spotify_df = pd.read_csv(input_file, sep="\t")
 
     # Lista para almacenar las letras
-    lyrics_data: List[Dict[str, str]] = []
+    lyrics_data: list[dict[str, str]] = []
 
     # Iterar sobre las filas del DataFrame
     for _, row in spotify_df.iterrows():
@@ -193,7 +153,7 @@ def process_lyrics(
         song_name = re.split(r"[-\(]", track_name)[0].strip()
 
         # Obtener la letra
-        lyrics = get_lyrics_from_lyricsondemand(artist_name, song_name, base_url)
+        lyrics = get_lyrics_from_lyricsondemand(artist_name, song_name)
         if lyrics:
             lyrics_data.append(
                 {"artist_name": artist_name, "song_name": song_name, "lyrics": lyrics}
@@ -202,33 +162,35 @@ def process_lyrics(
     # Convertir la lista de resultados a un DataFrame
     lyrics_df = pd.DataFrame(lyrics_data)
 
-    # Guardar los resultados en un archivo TSV
-    lyrics_df.to_csv(output_file, sep="\t", index=False)
-```
-
-## Definición de contantes y scraping
-
-```{python}
-# Asigno los valores a las constantes
-SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID", "")
-SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "")
-ARTIST_NAME = "Soda Stereo"
-SONGS_FILE = "../data/songs.tsv"
-LYRICS_FILE = "../data/lyrics.tsv"
-
-# Verificar si el archivo songs ya existe
-if os.path.exists(SONGS_FILE):
-    pass
-else:
-    spotify_client = initialize_spotify_client(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
-    fetch_artist_data(spotify_client, ARTIST_NAME, SONGS_FILE)
-
-# Verificar si el archivo lyrics ya existe
-if os.path.exists(LYRICS_FILE):
-    pass
-else:
-    process_lyrics(SONGS_FILE, LYRICS_FILE, ARTIST_NAME)
-```
+    return lyrics_df
 
 
-# EDA
+def main():
+    # Cargar las variables de entorno desde el archivo .env
+    load_dotenv()
+
+    # Asigno los valores a las constantes
+    SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID", "")
+    SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "")
+
+    ARTIST_NAME = "Soda Stereo"
+
+    SONGS_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "songs.tsv")
+    LYRICS_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "lyrics.tsv")
+
+    # Verificar si el archivo songs ya existe
+    if not os.path.exists(SONGS_FILE):
+        spotify_client = initialize_spotify_client(
+            SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
+        )
+        songs_df = fetch_artist_data(spotify_client, ARTIST_NAME)
+        songs_df.to_csv(SONGS_FILE, sep="\t", index=False)
+
+    # Verificar si el archivo lyrics ya existe
+    if not os.path.exists(LYRICS_FILE):
+        lyrics_df = process_lyrics(SONGS_FILE, LYRICS_FILE, ARTIST_NAME)
+        lyrics_df.to_csv(LYRICS_FILE, sep="\t", index=False)
+
+
+if __name__ == "__main__":
+    main()

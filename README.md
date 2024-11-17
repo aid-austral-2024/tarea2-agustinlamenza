@@ -36,7 +36,11 @@ Ejecuta el siguiente comando para instalar todas las dependencias del proyecto:
     ```bash
     poetry shell
     ```
-3. **Renderizar quarto y mover el resultado al root:**
+3. **Scraping de datos:**
     ```bash
-    quarto render code/analysis.qmd &&  mv code/index.html ./index.html
+    poetry run python code/01_scraping.py
+    ```
+4. **Renderizar analisis y mover resultado al root:**
+    ```bash
+    quarto render code/02_analysis.qmd &&  mv code/index.html ./index.html
     ```

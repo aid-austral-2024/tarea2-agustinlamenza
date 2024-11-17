@@ -1,0 +1,149 @@
+---
+title: "Scraping datos de canciones y letras + EDA"
+author: "Agustin Gonzalez Lamenza"
+date: last-modified
+date-format: long
+format: 
+  html:
+    toc: true
+    # toc-depth: 2
+    code-fold: true
+    df-print: paged
+    embed-resources: true
+    output-file: index.html
+execute:
+  echo: true
+  warning: false
+---
+
+# Carga de packages y datos
+
+```{r}
+# Carga de paquetes necesarios
+library(tidyverse)
+library(ggplot2)
+library(wordcloud)
+library(tidytext)
+library(textdata)
+library(DT)
+library(here)
+
+# Carga de los datos
+songs <- read_tsv(here("data", "songs.tsv"))
+lyrics <- read_tsv(here("data", "lyrics.tsv"))
+
+# Unión de datasets por canción
+data <- songs %>%
+  mutate(track_name = str_to_lower(track_name)) %>%
+  inner_join(
+    lyrics %>% mutate(song_name = str_to_lower(song_name)),
+    by = c("track_name" = "song_name")
+  )
+```
+
+# Análisis descriptivo
+
+## Distribución de duración de las canciones
+
+```{r}
+# Gráfico de distribución de la duración
+ggplot(data, aes(x = track_duration_ms / 1000)) +
+  geom_histogram(binwidth = 30, fill = "steelblue", color = "white") +
+  labs(
+    title = "Distribución de la duración de las canciones",
+    x = "Duración (segundos)",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+
+## Relación entre energía y bailabilidad
+
+```{r}
+# Gráfico de dispersión
+ggplot(data, aes(x = track_energy, y = track_danceability)) +
+  geom_point(alpha = 0.7, color = "darkorange") +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(
+    title = "Relación entre energía y bailabilidad",
+    x = "Energía",
+    y = "Bailabilidad"
+  ) +
+  theme_minimal()
+```
+
+## Estadísticas descriptivas
+
+```{r}
+# Resumen estadístico de las características numéricas
+data %>%
+  select(starts_with("track_")) %>%
+  summary() %>%
+  datatable(
+    caption = "Estadísticas descriptivas de las características de las canciones."
+  )
+```
+
+# Análisis textual
+
+## Frecuencia de palabras
+
+```{r}
+# Limpieza de texto y tokenización
+tokens <- data %>%
+  unnest_tokens(word, lyrics) %>%
+  anti_join(stop_words, by = "word") %>%
+  count(word, sort = TRUE)
+
+# Visualización de las palabras más frecuentes
+tokens %>%
+  top_n(20) %>%
+  ggplot(aes(x = reorder(word, n), y = n)) +
+  geom_col(fill = "purple") +
+  coord_flip() +
+  labs(
+    title = "Palabras más frecuentes en las letras",
+    x = "Palabras",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+```
+
+## Nube de palabras
+
+```{r}
+# Generar una nube de palabras
+set.seed(123)
+wordcloud::wordcloud(
+  words = tokens$word,
+  freq = tokens$n,
+  max.words = 100,
+  colors = brewer.pal(8, "Dark2")
+)
+```
+
+## Análisis de sentimientos
+<!-- 
+```{r}
+# Descargar el léxico NRC
+lexicon_nrc <- textdata::lexicon_nrc()
+
+# Cargar el léxico desde la descarga local
+nrc_sentiments <- lexicon_nrc
+
+# Análisis de sentimientos usando el léxico NRC
+sentiments <- tokens %>%
+  inner_join(get_sentiments("nrc"), by = "word") %>%
+  count(sentiment, sort = TRUE)
+
+# Visualización de los sentimientos predominantes
+ggplot(sentiments, aes(x = reorder(sentiment, n), y = n)) +
+  geom_col(fill = "skyblue") +
+  coord_flip() +
+  labs(
+    title = "Distribución de sentimientos en las letras",
+    x = "Sentimiento",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+``` -->
