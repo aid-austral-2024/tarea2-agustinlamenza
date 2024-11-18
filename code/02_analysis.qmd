@@ -17,6 +17,14 @@ execute:
   warning: false
 ---
 
+# Introducción
+Soda Stereo no es solo una banda, es un ícono del rock en español que marcó a generaciones con su música y poesía. En este análisis, exploramos a fondo su legado a través de datos y palabras, combinando herramientas modernas de análisis para revelar patrones y secretos escondidos en sus canciones y letras.
+
+La idea es entender no solo la música, sino también las emociones y mensajes que transmiten sus letras. ¿Qué tan energéticas son sus canciones? ¿Qué palabras se repiten con más frecuencia? ¿Qué sentimientos predominan en su discografía? Estas son algunas de las preguntas que buscamos responder.
+
+![Soda Stereo en acción](https://upload.wikimedia.org/wikipedia/commons/0/0c/Soda_Stereo_%2784.png)  
+*Figura 1: Soda Stereo, una banda que transformó la música en arte.*
+
 # Carga de packages y datos
 Este bloque de código carga todos los paquetes necesarios para realizar el análisis y también lee los archivos de datos que contienen la información sobre las canciones y las letras. Se asegura de eliminar duplicados en los conjuntos de datos antes de hacer la unión entre las canciones y las letras, lo que es importante para evitar inconsistencias en el análisis.
 
