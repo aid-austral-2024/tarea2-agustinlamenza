@@ -6,6 +6,7 @@ date-format: long
 format: 
   html:
     toc: true
+    number-sections: true
     code-fold: true
     df-print: paged
     embed-resources: true
@@ -32,7 +33,7 @@ library(here)
 songs <- read_tsv(here("data", "songs.tsv"))
 lyrics <- read_tsv(here("data", "lyrics.tsv"))
 
-# Unión de datasets por canción
+# Join de datasets por canción
 data <- songs %>%
   mutate(track_name = str_to_lower(track_name)) %>%
   inner_join(
