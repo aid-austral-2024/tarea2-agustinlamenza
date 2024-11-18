@@ -2,6 +2,8 @@
 
 Este proyecto se enfoca en el análisis de datos relacionados con la banda **Soda Stereo**, incluyendo el análisis de sus canciones y un estudio textual de sus letras. Los datos se procesan y visualizan utilizando **Quarto** para generar gráficos e informes, mientras que el análisis textual examina las letras de sus canciones.
 
+## Link a [web site](https://aid-austral-2024.github.io/tarea2-agustinlamenza/)
+
 ## Enunciado
 
 El enunciado del proyecto esta en: [enunciado.md](./enunciado.md).
