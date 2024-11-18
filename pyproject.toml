@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "test"
+name = "tarea2-agustinlamenza"
 version = "0.1.0"
 description = ""
-authors = ["alamenza <agustin.lamenza@mercadolibre.com>"]
+authors = ["alamenza <agustinlamenza@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -11,6 +11,7 @@ python-dotenv = "^1.0.1"
 pandas = "^2.2.3"
 spotipy = "^2.24.0"
 unidecode = "^1.3.8"
+bs4 = "^0.0.2"
 
 
 [build-system]

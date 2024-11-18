@@ -29,20 +29,21 @@ SPOTIFY_CLIENT_SECRET=""
 ### Pasos para reproducir resultados
 1. **Instalar dependencias:** Para instalar todas las dependencias necesarias, ejecuta:
     ```bash
-    poetry install
+    make install
     ```
 
 2. **Activar el entorno virtual:** Una vez que las dependencias estén instaladas, activa el entorno virtual de Poetry con el siguiente comando:
     ```bash
-    poetry shell
+   make shell
     ```
 
 3. **Scraping de datos:** Para obtener los datos desde las fuentes externas (Spotify y Lyricsondemand), ejecuta el script de scraping:
     ```bash
-    poetry run python code/01_scraping.py
+    make scrape
     ```
 
 4. **Renderizar analisis y mover resultado al root:** Finalmente, para renderizar el análisis y mover el archivo resultante al directorio raíz del proyecto, ejecuta:
     ```bash
-    quarto render code/02_analysis.qmd &&  mv code/index.html ./index.html
+    make render
     ```
+5. **Reproducir todo el proceso** (instalar, activar entorno, scraping y análisis):
