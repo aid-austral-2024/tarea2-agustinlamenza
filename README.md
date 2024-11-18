@@ -47,3 +47,6 @@ SPOTIFY_CLIENT_SECRET=""
     make render
     ```
 5. **Reproducir todo el proceso** (instalar, activar entorno, scraping y análisis):
+    ```bash
+    make reproducir
+    ```
