@@ -28,18 +28,39 @@ library(textdata)
 library(stopwords)
 library(DT)
 library(here)
+library(factoextra)
+library(pastecs)
+library(psych)
 
 # Carga de los datos
 songs <- read_tsv(here("data", "songs.tsv"))
 lyrics <- read_tsv(here("data", "lyrics.tsv"))
 
-# Join de datasets por canción
-data <- songs %>%
+songs_unique <- songs %>%
+  distinct(track_name, .keep_all = TRUE)
+
+lyrics_unique <- lyrics %>%
+  distinct(song_name, .keep_all = TRUE)
+
+# Realizar el join después de eliminar duplicados
+data <- songs_unique %>%
   mutate(track_name = str_to_lower(track_name)) %>%
   inner_join(
-    lyrics %>% mutate(song_name = str_to_lower(song_name)),
+    lyrics_unique %>% mutate(song_name = str_to_lower(song_name)),
     by = c("track_name" = "song_name")
   )
+```
+
+## Dataframe songs
+
+```{r}
+head(songs_unique)
+```
+
+## Dataframe lyrics
+
+```{r}
+head(lyrics_unique)
 ```
 
 # Análisis descriptivo
@@ -73,16 +94,33 @@ ggplot(data, aes(x = track_energy, y = track_danceability)) +
   theme_minimal()
 ```
 
-## Estadísticas descriptivas
+## Estadísticas descriptivas de features numericos
 
 ```{r}
+# Seleccionar solo columnas numéricas
+numerical_features <- songs_unique %>%
+  select(where(is.numeric))
+
 # Resumen estadístico de las características numéricas
-data %>%
-  select(starts_with("track_")) %>%
-  summary() %>%
-  datatable(
-    caption = "Estadísticas descriptivas de las características de las canciones."
-  )
+res <- pastecs::stat.desc(numerical_features) %>%
+  as.matrix() %>%
+  as.data.frame() %>%
+  round(2)
+
+res <- format(res, scientific = FALSE)
+
+knitr::kable(data.frame(res), digits = 2)
+```
+
+## Grafico de correlación
+
+```{r}
+pairs.panels(numerical_features,
+  method = "pearson", # metodo de correlación
+  hist.col = "#00AFBB",
+  density = TRUE,
+  ellipses = F
+)
 ```
 
 # Análisis textual
