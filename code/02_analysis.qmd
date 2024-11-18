@@ -6,7 +6,6 @@ date-format: long
 format: 
   html:
     toc: true
-    # toc-depth: 2
     code-fold: true
     df-print: paged
     embed-resources: true
@@ -25,6 +24,7 @@ library(ggplot2)
 library(wordcloud)
 library(tidytext)
 library(textdata)
+library(stopwords)
 library(DT)
 library(here)
 
@@ -89,10 +89,13 @@ data %>%
 ## Frecuencia de palabras
 
 ```{r}
+# Obtener las stopwords en español
+stopwords_es <- stopwords("es")
+
 # Limpieza de texto y tokenización
 tokens <- data %>%
   unnest_tokens(word, lyrics) %>%
-  anti_join(stop_words, by = "word") %>%
+  anti_join(tibble(word = stopwords_es), by = "word") %>%
   count(word, sort = TRUE)
 
 # Visualización de las palabras más frecuentes

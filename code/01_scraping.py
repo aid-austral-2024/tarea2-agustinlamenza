@@ -119,7 +119,6 @@ def get_lyrics_from_lyricsondemand(
     # Construir la URL de la canción
     url = f"{base_url}/s/{artist}/{song_title}.html"
 
-    # Hacer la solicitud GET al sitio web
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -156,7 +155,7 @@ def process_lyrics(
         lyrics = get_lyrics_from_lyricsondemand(artist_name, song_name)
         if lyrics:
             lyrics_data.append(
-                {"artist_name": artist_name, "song_name": song_name, "lyrics": lyrics}
+                {"artist_name": artist_name, "song_name": track_name, "lyrics": lyrics}
             )
 
     # Convertir la lista de resultados a un DataFrame
@@ -188,7 +187,7 @@ def main():
 
     # Verificar si el archivo lyrics ya existe
     if not os.path.exists(LYRICS_FILE):
-        lyrics_df = process_lyrics(SONGS_FILE, LYRICS_FILE, ARTIST_NAME)
+        lyrics_df = process_lyrics(SONGS_FILE, ARTIST_NAME)
         lyrics_df.to_csv(LYRICS_FILE, sep="\t", index=False)
 
 
