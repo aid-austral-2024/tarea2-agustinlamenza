@@ -1,5 +1,6 @@
 ---
-title: "Scraping datos de canciones y letras + EDA"
+title: "Tarea 2 - MCD - 2024"
+subtitle: "Analisis descriptivo y textual de discografia de Soda Stereo"
 author: "Agustin Gonzalez Lamenza"
 date: last-modified
 date-format: long
