@@ -18,9 +18,9 @@ execute:
 ---
 
 # Carga de packages y datos
+Este bloque de código carga todos los paquetes necesarios para realizar el análisis y también lee los archivos de datos que contienen la información sobre las canciones y las letras. Se asegura de eliminar duplicados en los conjuntos de datos antes de hacer la unión entre las canciones y las letras, lo que es importante para evitar inconsistencias en el análisis.
 
 ```{r}
-# Carga de paquetes necesarios
 library(tidyverse)
 library(ggplot2)
 library(wordcloud)
@@ -51,6 +51,7 @@ data <- songs_unique %>%
 ```
 
 ## Dataframe songs
+Aquí se muestra el primer vistazo a los datos de las canciones, con un formato HTML que incluye un truncamiento de texto y tooltips. Esto es útil para ver rápidamente los nombres de las canciones sin que la tabla se vuelva demasiado larga o desordenada.
 
 ```{r}
 songs_unique %>%
@@ -63,9 +64,9 @@ songs_unique %>%
 ```
 
 ## Dataframe lyrics
+Similar al bloque anterior, esta sección muestra las primeras filas del dataframe de letras con un formato visual similar, proporcionando un vistazo a las canciones y sus letras de manera compacta.
 
 ```{r}
-# Crear la tabla con truncamiento y tooltip para todas las columnas
 lyrics_unique %>%
   head() %>%
   mutate(across(everything(), ~ paste0(
@@ -78,9 +79,9 @@ lyrics_unique %>%
 # Análisis descriptivo
 
 ## Distribución de duración de las canciones
+Este gráfico muestra cómo se distribuyen las duraciones de las canciones. La visualización usa un histograma, lo que ayuda a entender la variabilidad en los tiempos de las canciones y ver si hay una tendencia hacia canciones más largas o más cortas.
 
 ```{r}
-# Gráfico de distribución de la duración
 ggplot(data, aes(x = track_duration_ms / 1000)) +
   geom_histogram(binwidth = 30, fill = "steelblue", color = "white") +
   labs(
@@ -92,9 +93,9 @@ ggplot(data, aes(x = track_duration_ms / 1000)) +
 ```
 
 ## Relación entre energía y bailabilidad
+Aquí se explora cómo se relacionan las métricas de energía y bailabilidad de las canciones. El gráfico de dispersión con una línea de regresión ayuda a visualizar si las canciones más energéticas tienden a ser también más bailables, lo cual puede ofrecer información interesante sobre el estilo de las canciones.
 
 ```{r}
-# Gráfico de dispersión
 ggplot(data, aes(x = track_energy, y = track_danceability)) +
   geom_point(alpha = 0.7, color = "darkorange") +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
@@ -107,13 +108,12 @@ ggplot(data, aes(x = track_energy, y = track_danceability)) +
 ```
 
 ## Estadísticas descriptivas de features numericos
+Esta sección calcula estadísticas descriptivas para las características numéricas de las canciones (por ejemplo, duración, energía, etc.). Presentar los valores promedio, mínimo, máximo, etc., nos da una idea de cómo son los datos en términos de estos atributos.
 
 ```{r}
-# Seleccionar solo columnas numéricas
 numerical_features <- songs_unique %>%
   select(where(is.numeric))
 
-# Resumen estadístico de las características numéricas
 res <- pastecs::stat.desc(numerical_features) %>%
   as.matrix() %>%
   as.data.frame() %>%
@@ -128,7 +128,7 @@ knitr::kable(data.frame(res), digits = 2)
 
 ```{r}
 pairs.panels(numerical_features,
-  method = "pearson", # metodo de correlación
+  method = "pearson",
   hist.col = "#00AFBB",
   density = TRUE,
   ellipses = F
@@ -138,33 +138,29 @@ pairs.panels(numerical_features,
 # Análisis textual
 
 ## Establecer una semilla para reproducibilidad
-Util para generar los wordcloud
+Aquí se establece una semilla para asegurar que el análisis de las palabras sea reproducible, lo que es importante para obtener los mismos resultados si se vuelve a ejecutar el análisis en el futuro.
 
 ```{r}
 set.seed(123)
 ```
 
-
 ## Frecuencia de palabras
+En este bloque se crea una lista de las palabras más frecuentes en las letras de las canciones, después de eliminar las palabras vacías (stopwords) y algunas otras específicas de Soda Stereo. El gráfico resultante muestra cuáles son las palabras más recurrentes, lo que puede decirnos mucho sobre los temas recurrentes en las canciones.
 
 ```{r}
-# Obtener las stopwords en español
 stopwords_es <- stopwords("es")
 
 # Crear un vector con las stopwords adicionales
 # Sumo algo muy repetitivo en Soda (solo valido para Soda)
 stopwords_adicionales <- c("ay", "oh")
 
-# Combinar las stopwords en español con las adicionales
 stopwords_completas <- c(stopwords_es, stopwords_adicionales)
 
-# Limpieza de texto y tokenización
 tokens <- data %>%
   unnest_tokens(word, lyrics) %>%
   anti_join(tibble(word = stopwords_completas), by = "word") %>%
   count(word, sort = TRUE)
 
-# Visualización de las palabras más frecuentes
 tokens %>%
   top_n(20) %>%
   ggplot(aes(x = reorder(word, n), y = n)) +
@@ -190,6 +186,7 @@ wordcloud::wordcloud(
 ```
 
 ## Análisis de sentimientos
+Aquí se utiliza el léxico NRC para analizar los sentimientos presentes en las letras de las canciones. Los sentimientos son clasificados y contados, luego visualizados en un gráfico para mostrar cuál es el tono predominante (positivo, negativo, etc.) en las letras.
 
 ```{r}
 # Análisis de sentimientos usando el léxico NRC
@@ -197,7 +194,6 @@ sentiments <- tokens %>%
   inner_join(get_sentiments("nrc"), by = "word") %>%
   count(sentiment, sort = TRUE)
 
-# Visualización de los sentimientos predominantes
 ggplot(sentiments, aes(x = reorder(sentiment, n), y = n)) +
   geom_col(fill = "skyblue") +
   coord_flip() +
