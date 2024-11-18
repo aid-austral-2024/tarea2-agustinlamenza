@@ -214,9 +214,7 @@ ggplot(sentiments, aes(x = reorder(sentiment, n), y = n)) +
 wordcloud::wordcloud(
   words = sentiments$sentiment,
   freq = sentiments$n,
-  min.freq = 1, # Frecuencia mínima de las palabras para aparecer
-  scale = c(3, 0.5), # Tamaño de las palabras (más grande a más pequeño)
-  colors = brewer.pal(8, "Dark2"), # Paleta de colores
-  random.order = FALSE
-) # Para ordenar las palabras por frecuencia
+  min.freq = 1,
+  colors = brewer.pal(8, "Dark2"),
+)
 ```
