@@ -26,9 +26,7 @@ library(wordcloud)
 library(tidytext)
 library(textdata)
 library(stopwords)
-library(DT)
 library(here)
-library(factoextra)
 library(pastecs)
 library(psych)
 
@@ -54,13 +52,26 @@ data <- songs_unique %>%
 ## Dataframe songs
 
 ```{r}
-head(songs_unique)
+songs_unique %>%
+  head() %>%
+  mutate(across(everything(), ~ paste0(
+    '<span title="', ., '" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">',
+    substr(., 1, 40), "...</span>"
+  ))) %>%
+  knitr::kable("html", escape = FALSE)
 ```
 
 ## Dataframe lyrics
 
 ```{r}
-head(lyrics_unique)
+# Crear la tabla con truncamiento y tooltip para todas las columnas
+lyrics_unique %>%
+  head() %>%
+  mutate(across(everything(), ~ paste0(
+    '<span title="', ., '" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">',
+    substr(., 1, 60), "...</span>"
+  ))) %>%
+  knitr::kable("html", escape = FALSE)
 ```
 
 # Análisis descriptivo
@@ -125,16 +136,31 @@ pairs.panels(numerical_features,
 
 # Análisis textual
 
+## Establecer una semilla para reproducibilidad
+Util para generar los wordcloud
+
+```{r}
+set.seed(123)
+```
+
+
 ## Frecuencia de palabras
 
 ```{r}
 # Obtener las stopwords en español
 stopwords_es <- stopwords("es")
 
+# Crear un vector con las stopwords adicionales
+# Sumo algo muy repetitivo en Soda (solo valido para Soda)
+stopwords_adicionales <- c("ay", "oh")
+
+# Combinar las stopwords en español con las adicionales
+stopwords_completas <- c(stopwords_es, stopwords_adicionales)
+
 # Limpieza de texto y tokenización
 tokens <- data %>%
   unnest_tokens(word, lyrics) %>%
-  anti_join(tibble(word = stopwords_es), by = "word") %>%
+  anti_join(tibble(word = stopwords_completas), by = "word") %>%
   count(word, sort = TRUE)
 
 # Visualización de las palabras más frecuentes
@@ -154,8 +180,6 @@ tokens %>%
 ## Nube de palabras
 
 ```{r}
-# Generar una nube de palabras
-set.seed(123)
 wordcloud::wordcloud(
   words = tokens$word,
   freq = tokens$n,
@@ -165,14 +189,8 @@ wordcloud::wordcloud(
 ```
 
 ## Análisis de sentimientos
-<!-- 
+
 ```{r}
-# Descargar el léxico NRC
-lexicon_nrc <- textdata::lexicon_nrc()
-
-# Cargar el léxico desde la descarga local
-nrc_sentiments <- lexicon_nrc
-
 # Análisis de sentimientos usando el léxico NRC
 sentiments <- tokens %>%
   inner_join(get_sentiments("nrc"), by = "word") %>%
@@ -188,4 +206,17 @@ ggplot(sentiments, aes(x = reorder(sentiment, n), y = n)) +
     y = "Frecuencia"
   ) +
   theme_minimal()
-``` -->
+```
+
+## Nube de palabras de sentimientos
+
+```{r}
+wordcloud::wordcloud(
+  words = sentiments$sentiment,
+  freq = sentiments$n,
+  min.freq = 1, # Frecuencia mínima de las palabras para aparecer
+  scale = c(3, 0.5), # Tamaño de las palabras (más grande a más pequeño)
+  colors = brewer.pal(8, "Dark2"), # Paleta de colores
+  random.order = FALSE
+) # Para ordenar las palabras por frecuencia
+```
