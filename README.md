@@ -26,7 +26,7 @@ SPOTIFY_CLIENT_ID=""
 SPOTIFY_CLIENT_SECRET=""
 ```
 
-### Pasos para reproducir resultados
+### Pasos para reproducir resultados (Linux, macOS)
 1. **Instalar dependencias:** Para instalar todas las dependencias necesarias, ejecuta:
     ```bash
     make install

@@ -1,4 +1,6 @@
 # Makefile para reproducir el proyecto
+# Este archivo está diseñado para sistemas Unix-like (Linux, macOS). 
+# En Windows, se recomienda usar WSL o un entorno similar.
 
 # Variables
 ENV_FILE = .env
