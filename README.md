@@ -31,22 +31,17 @@ SPOTIFY_CLIENT_SECRET=""
     ```bash
     make install
     ```
-
-2. **Activar el entorno virtual:** Una vez que las dependencias estén instaladas, activa el entorno virtual de Poetry con el siguiente comando:
-    ```bash
-   make shell
-    ```
-
-3. **Scraping de datos:** Para obtener los datos desde las fuentes externas (Spotify y Lyricsondemand), ejecuta el script de scraping:
+    
+2. **Scraping de datos:** Para obtener los datos desde las fuentes externas (Spotify y Lyricsondemand), ejecuta el script de scraping:
     ```bash
     make scrape
     ```
 
-4. **Renderizar analisis y mover resultado al root:** Finalmente, para renderizar el análisis y mover el archivo resultante al directorio raíz del proyecto, ejecuta:
+3. **Renderizar analisis y mover resultado al root:** Finalmente, para renderizar el análisis y mover el archivo resultante al directorio raíz del proyecto, ejecuta:
     ```bash
     make render
     ```
-5. **Reproducir todo el proceso** (instalar, activar entorno, scraping y análisis):
+4. **Reproducir todo el proceso** (instalar, activar entorno, scraping y análisis):
     ```bash
     make reproducir
     ```

@@ -1,6 +1,6 @@
 ---
 title: "Tarea 2 - MCD - 2024"
-subtitle: "Analisis descriptivo y textual de discografia de Soda Stereo"
+subtitle: "Analisis descriptivo y textual de discografia de Soda Stereo 🎸"
 author: "Agustin Gonzalez Lamenza"
 date: last-modified
 date-format: long
@@ -29,6 +29,7 @@ La idea es entender no solo la música, sino también las emociones y mensajes q
 Este bloque de código carga todos los paquetes necesarios para realizar el análisis y también lee los archivos de datos que contienen la información sobre las canciones y las letras. Se asegura de eliminar duplicados en los conjuntos de datos antes de hacer la unión entre las canciones y las letras, lo que es importante para evitar inconsistencias en el análisis.
 
 ```{r}
+# Lista de paquetes a instalar
 library(tidyverse)
 library(ggplot2)
 library(wordcloud)
