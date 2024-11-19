@@ -225,8 +225,8 @@ wordcloud::wordcloud(
 ```
 
 # Concusión
-Este análisis nos permitió acercarnos a Soda Stereo desde una perspectiva diferente, más allá de la experiencia emocional de escuchar su música. Por un lado, exploramos sus canciones a través de datos, identificando patrones en duración, energía y bailabilidad que ayudan a entender mejor su estilo único. Por otro, nos sumergimos en sus letras para descubrir las palabras y emociones que dan vida a su legado artístico.
+Soda Stereo es un viaje emocional. Sus letras están llenas de sentimientos intensos, donde la tristeza, la melancolía y la introspección tienen un gran protagonismo. Es interesante ver cómo manejan un equilibrio entre lo oscuro y lo luminoso. Por un lado, hay mucha nostalgia y hasta algo de enojo en sus canciones, pero por otro lado, también transmiten confianza y una búsqueda constante de algo más, como si siempre hubiera esperanza al final.
 
-Las palabras más frecuentes y los sentimientos predominantes en sus canciones nos muestran una riqueza emocional que sigue conectando con generaciones, confirmando por qué Soda Stereo se ha mantenido como un ícono del rock en español. Este proyecto no solo celebra su obra, sino que demuestra cómo los datos y el análisis textual pueden abrir nuevas formas de apreciar y entender la música que amamos.
+Algo que llama la atención es cómo combinan temas tan humanos con su sonido característico, que puede ser suave y envolvente, pero también salvaje e intenso. No son canciones hechas solo para escuchar, sino para sentirlas. Tal vez por eso muchas de sus letras se quedan en la cabeza, porque realmente logran conectar con las emociones de quien las escucha.
 
-En resumen, Soda Stereo sigue siendo tan relevante como siempre, y su música, ahora también a través de los datos, continúa inspirándonos y emocionándonos.
+En pocas palabras, Soda Stereo no solo hizo música, creó momentos y emociones que siguen vigentes. Hablar de ellos es hablar de poesía hecha canción, algo que muy pocas bandas logran.
