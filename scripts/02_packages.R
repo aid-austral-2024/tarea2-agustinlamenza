@@ -9,6 +9,3 @@ install_missing_packages <- packages[!(packages %in% installed.packages()[, "Pac
 if (length(install_missing_packages)) {
   install.packages(install_missing_packages)
 }
-
-# Cargar los paquetes
-lapply(packages, library, character.only = TRUE)
