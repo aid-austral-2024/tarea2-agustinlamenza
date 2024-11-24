@@ -225,7 +225,7 @@ wordcloud::wordcloud(
 )
 ```
 
-# Concusión
+# Conclusión
 Soda Stereo es un viaje emocional. Sus letras están llenas de sentimientos intensos, donde la tristeza, la melancolía y la introspección tienen un gran protagonismo. Es interesante ver cómo manejan un equilibrio entre lo oscuro y lo luminoso. Por un lado, hay mucha nostalgia y hasta algo de enojo en sus canciones, pero por otro lado, también transmiten confianza y una búsqueda constante de algo más, como si siempre hubiera esperanza al final.
 
 Algo que llama la atención es cómo combinan temas tan humanos con su sonido característico, que puede ser suave y envolvente, pero también salvaje e intenso. No son canciones hechas solo para escuchar, sino para sentirlas. Tal vez por eso muchas de sus letras se quedan en la cabeza, porque realmente logran conectar con las emociones de quien las escucha.
